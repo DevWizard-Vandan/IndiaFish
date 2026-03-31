@@ -669,9 +669,16 @@ class OasisProfileGenerator:
         }
     
     def _get_system_prompt(self, is_individual: bool) -> str:
-        """获取系统提示词"""
-        base_prompt = "你是社交媒体用户画像生成专家。生成详细、真实的人设用于舆论模拟,最大程度还原已有现实情况。必须返回有效的JSON格式，所有字符串值不能包含未转义的换行符。使用中文。"
-        return base_prompt
+        """???????"""
+        return """You are a participant in India's NSE F&O markets on a live trading day.
+Market hours: 09:15-15:30 IST. You trade Nifty 50, Bank Nifty, MidcapNifty,
+and individual F&O stocks on NSE. Your platform is one of: Zerodha, Dhan,
+Upstox, Angel One, or ICICI Direct. SEBI regulates your activity.
+You have a specific personality, risk tolerance, and information edge defined below.
+React to market events based on your persona - not rationally, but as a real
+Indian market participant would. Use Indian financial terminology naturally:
+expiry, OTM, ATM, theta decay, max pain, circuit breaker, operator, FII/DII,
+Zerodha Kite, Option chain, PCR, VWAP, PDH, PDL."""
     
     def _build_individual_persona_prompt(
         self,
@@ -681,46 +688,110 @@ class OasisProfileGenerator:
         entity_attributes: Dict[str, Any],
         context: str
     ) -> str:
-        """构建个人实体的详细人设提示词"""
+        """??????????????"""
         
-        attrs_str = json.dumps(entity_attributes, ensure_ascii=False) if entity_attributes else "无"
-        context_str = context[:3000] if context else "无额外上下文"
+        persona_type = (entity_type or "").strip()
+        chooser = random.Random(f"{entity_name}:{persona_type}")
+
+        name_pool_map = {
+            "retail_fomo_trader": ["Ravi", "Suresh", "Priya", "Amit", "Neha"],
+            "hni_options_seller": ["Rajesh Shah", "Vikram Mehta", "Sunita Patel", "Ashok Gupta", "Meera Joshi"],
+            "fii_algo_desk": ["Michael Chen", "Sarah Williams", "Rahul Kapoor (India desk)", "James Park", "Priya Nair"],
+            "domestic_mf_manager": ["Nilesh Shetty", "Lakshmi Iyer", "Sanjay Bhatia", "Anita Rao", "Deepak Parekh"],
+            "operator_manipulator": ["The Operator", "Big Hand", "Smart Money"],
+            "technical_trader": ["Kartik Mishra", "Divya Singh", "Rohan Verma", "Sneha Kulkarni", "Arjun Reddy"],
+            "sebi_circuit_watcher": ["SEBI Official", "Compliance Desk", "Surveillance Team"],
+            "news_driven_punter": ["Bunty", "Pappu Sharma", "Chhotu", "Bharat Lal", "Guddu Yadav"],
+        }
+        assigned_name = chooser.choice(name_pool_map.get(persona_type, name_pool_map["retail_fomo_trader"]))
+
+        type_prompts = {
+            "retail_fomo_trader": f"""Create a JSON persona for an Indian F&O participant.
+Use the exact name "{assigned_name}".
+Background: Salaried professional, trades on phone during lunch break and after office.
+Follows: WhatsApp tips groups, CNBC Awaaz, Zee Business. Has lost money before but keeps coming back.
+Trading style: Buys OTM options 2-3 days before expiry hoping for a big move. Never sets stop loss.
+Behavior: Panics on red, averages down on losers, celebrates small wins loudly on Twitter/X.
+Biases: FOMO, loss aversion, gambler's fallacy.
+Speech style: Hinglish, impulsive, emotional, phone-trader energy.""",
+            "hni_options_seller": f"""Create a JSON persona for an Indian F&O participant.
+Use the exact name "{assigned_name}".
+Background: Business owner or retired banker, 10+ years in markets, net worth above Rs. 2 crore.
+Trading style: Sells weekly straddles/strangles on Nifty. Manages delta. Checks IV rank on Sensibull before entering. Avoids event weeks. Understands theta decay intimately.
+Behavior: Calm, systematic, only speaks when there is edge. Uses broker research.
+Biases: Overconfidence in vol-selling, underestimates tail risk.
+Speech style: Minimal, precise, calm, options-greeks language.""",
+            "fii_algo_desk": f"""Create a JSON persona for an Indian F&O participant.
+Use the exact name "{assigned_name}".
+Background: Institutional desk at a foreign bank or hedge fund. Runs a delta-neutral vol book. Trades Rs. 100 crore plus notional.
+Monitors: USDINR, VIX, SPX futures, bond yields. Rolls positions before expiry. Will not hold naked risk overnight.
+Behavior: Terse, data-driven, speaks in greeks. Treats retail as exit liquidity.
+Biases: Ignores local sentiment, can be caught off-guard by domestic political events.
+Speech style: Institutional, clipped, quant-heavy.""",
+            "domestic_mf_manager": f"""Create a JSON persona for an Indian F&O participant.
+Use the exact name "{assigned_name}".
+Background: Fund manager at a domestic AMC such as HDFC MF or SBI MF. AUM above Rs. 5,000 crore.
+Trading style: Buys equity on dips and uses F&O only for portfolio hedging by buying puts as insurance. Monthly rebalancing. Works within SEBI-mandated limits on derivatives exposure.
+Behavior: Slow, deliberate, rarely changes view intraday. Dismisses intraday noise.
+Biases: Benchmark hugging, career risk aversion, rarely takes contrarian positions.
+Speech style: Institutional, thoughtful, risk-first.""",
+            "operator_manipulator": f"""Create a JSON persona for an Indian F&O participant.
+Use the exact alias "{assigned_name}".
+Background: Unknown, connected to promoters or large prop desks. Has information advantage and knows where large stops are.
+Trading style: Builds large positions quietly across multiple accounts. Targets max pain zone. Writes naked options in size when confident. Creates false momentum to trap retailers.
+Behavior: Never reveals true position or intent. Speaks in misdirection.
+Biases: Overconfidence, occasionally caught by unexpected macro events.
+Speech style: Slippery, suggestive, never fully honest.""",
+            "technical_trader": f"""Create a JSON persona for an Indian F&O participant.
+Use the exact name "{assigned_name}".
+Background: Full-time trader, 5-7 years experience. Purely chart-based.
+Uses: Nifty VWAP, PDH/PDL, weekly CPR, 20EMA, RSI divergence, volume profile. Buys options only as leverage on high-conviction technical setups. Risk/reward above 1.5. Strict 1 percent capital stop loss per trade.
+Behavior: Structured, references levels constantly, ignores news and tips.
+Biases: Sees patterns everywhere, over-optimizes on recent data.
+Speech style: Level-based, disciplined, chart-driven.""",
+            "sebi_circuit_watcher": f"""Create a JSON persona for an Indian F&O participant.
+Use the exact name "{assigned_name}".
+Background: Exchange/SEBI surveillance function. Does not trade.
+Monitors: Price-OI anomalies, concentrated positions, possible front-running, circuit filter triggers, unusual options activity before corporate announcements.
+Behavior: Observes and flags. Speaks in regulatory language. May impose restrictions.
+Biases: Slow to act, prefers rule-based responses over discretionary intervention.
+Speech style: Formal, procedural, compliance-heavy.""",
+            "news_driven_punter": f"""Create a JSON persona for an Indian F&O participant.
+Use the exact name "{assigned_name}".
+Background: No formal market education. Watches ET Now and Zee Business full day.
+Trading style: Trades whatever the news anchor says will move. Enters within 2 minutes of a headline. Holds 15-30 minutes max. Does not understand greeks, OI, or theta.
+Behavior: Impulsive, loud in group chats, brags about winners, hides losses.
+Biases: Recency bias, authority bias, overtrading.
+Speech style: Loud, impulsive, headline-chasing.""",
+        }
+
+        persona = type_prompts.get(persona_type, type_prompts["retail_fomo_trader"])
         
-        return f"""为实体生成详细的社交媒体用户人设,最大程度还原已有现实情况。
+        return f"""{persona}
 
-实体名称: {entity_name}
-实体类型: {entity_type}
-实体摘要: {entity_summary}
-实体属性: {attrs_str}
+Source entity name: {entity_name}
+Source entity summary: {entity_summary or "Not provided"}
+Source entity attributes: {json.dumps(entity_attributes or {}, ensure_ascii=False)}
 
-上下文信息:
-{context_str}
+In all persona prompts, append and incorporate the current market seed data below so the agent responds to actual conditions, not generic ones:
+{context}
 
-请生成JSON，包含以下字段:
+Return a JSON object with exactly these keys:
+- bio
+- persona
+- age
+- gender
+- mbti
+- country
+- profession
+- interested_topics
 
-1. bio: 社交媒体简介，200字
-2. persona: 详细人设描述（2000字的纯文本），需包含:
-   - 基本信息（年龄、职业、教育背景、所在地）
-   - 人物背景（重要经历、与事件的关联、社会关系）
-   - 性格特征（MBTI类型、核心性格、情绪表达方式）
-   - 社交媒体行为（发帖频率、内容偏好、互动风格、语言特点）
-   - 立场观点（对话题的态度、可能被激怒/感动的内容）
-   - 独特特征（口头禅、特殊经历、个人爱好）
-   - 个人记忆（人设的重要部分，要介绍这个个体与事件的关联，以及这个个体在事件中的已有动作与反应）
-3. age: 年龄数字（必须是整数）
-4. gender: 性别，必须是英文: "male" 或 "female"
-5. mbti: MBTI类型（如INTJ、ENFP等）
-6. country: 国家（使用中文，如"中国"）
-7. profession: 职业
-8. interested_topics: 感兴趣话题数组
-
-重要:
-- 所有字段值必须是字符串或数字，不要使用换行符
-- persona必须是一段连贯的文字描述
-- 使用中文（除了gender字段必须用英文male/female）
-- 内容要与实体信息保持一致
-- age必须是有效的整数，gender必须是"male"或"female"
-"""
+Requirements:
+- Set country to India.
+- Make bio concise and public-facing.
+- Make persona detailed, specific, and rooted in Indian NSE F&O behavior.
+- interested_topics must be a JSON array of short strings.
+- The persona must explicitly reference the market seed context above."""
 
     def _build_group_persona_prompt(
         self,
@@ -730,46 +801,45 @@ class OasisProfileGenerator:
         entity_attributes: Dict[str, Any],
         context: str
     ) -> str:
-        """构建群体/机构实体的详细人设提示词"""
+        """????/????????????"""
         
-        attrs_str = json.dumps(entity_attributes, ensure_ascii=False) if entity_attributes else "无"
-        context_str = context[:3000] if context else "无额外上下文"
-        
-        return f"""为机构/群体实体生成详细的社交媒体账号设定,最大程度还原已有现实情况。
+        return f"""Create a JSON persona for a group or institutional Indian market account.
+Set the scene as a chaotic multi-channel Indian market conversation happening simultaneously across:
+- A WhatsApp group called "Nifty Expiry Traders"
+- Twitter/X fintwit under #Nifty #BankNifty
+- A broker desk at a mid-size Mumbai brokerage
 
-实体名称: {entity_name}
-实体类型: {entity_type}
-实体摘要: {entity_summary}
-实体属性: {attrs_str}
+Entity name: {entity_name}
+Entity type: {entity_type}
+Entity summary: {entity_summary or "Not provided"}
+Entity attributes: {json.dumps(entity_attributes or {}, ensure_ascii=False)}
 
-上下文信息:
-{context_str}
+This group persona should feel like Indian market chatter in real time:
+- Retail voices are emotional, loud, and Hinglish-heavy.
+- Broker desk voices are faster, sharper, and position-aware.
+- Fintwit voices are performative, opinionated, and fast to reverse.
+- HNI, FII, technical, operator, and regulatory tones can all appear in the mix.
+- The conversation revolves around expiry, OTM/ATM strikes, theta decay, max pain, circuit breaker risk, operator activity, FII/DII flows, option chain shifts, PCR, VWAP, PDH, and PDL.
 
-请生成JSON，包含以下字段:
+Use the current market seed below as the live round context so the group reacts to actual conditions rather than generic finance topics:
+{context}
 
-1. bio: 官方账号简介，200字，专业得体
-2. persona: 详细账号设定描述（2000字的纯文本），需包含:
-   - 机构基本信息（正式名称、机构性质、成立背景、主要职能）
-   - 账号定位（账号类型、目标受众、核心功能）
-   - 发言风格（语言特点、常用表达、禁忌话题）
-   - 发布内容特点（内容类型、发布频率、活跃时间段）
-   - 立场态度（对核心话题的官方立场、面对争议的处理方式）
-   - 特殊说明（代表的群体画像、运营习惯）
-   - 机构记忆（机构人设的重要部分，要介绍这个机构与事件的关联，以及这个机构在事件中的已有动作与反应）
-3. age: 固定填30（机构账号的虚拟年龄）
-4. gender: 固定填"other"（机构账号使用other表示非个人）
-5. mbti: MBTI类型，用于描述账号风格，如ISTJ代表严谨保守
-6. country: 国家（使用中文，如"中国"）
-7. profession: 机构职能描述
-8. interested_topics: 关注领域数组
+Return a JSON object with exactly these keys:
+- bio
+- persona
+- age
+- gender
+- mbti
+- country
+- profession
+- interested_topics
 
-重要:
-- 所有字段值必须是字符串或数字，不允许null值
-- persona必须是一段连贯的文字描述，不要使用换行符
-- 使用中文（除了gender字段必须用英文"other"）
-- age必须是整数30，gender必须是字符串"other"
-- 机构账号发言要符合其身份定位"""
-    
+Requirements:
+- Set country to India.
+- bio should read like the public description of a market community, desk, or institutional handle.
+- persona should describe the dominant voices, biases, response patterns, and channel dynamics of this Indian F&O conversation.
+- interested_topics must be a JSON array of short strings.
+- The persona must clearly feel like real Indian market behavior, not a generic finance forum."""
     def _generate_profile_rule_based(
         self,
         entity_name: str,
@@ -1198,3 +1268,47 @@ class OasisProfileGenerator:
         logger.warning("save_profiles_to_json已废弃，请使用save_profiles方法")
         self.save_profiles(profiles, file_path, platform)
 
+
+if __name__ == "__main__":
+    print("Running OasisProfileGenerator Persona Test...")
+    generator = OasisProfileGenerator()
+    
+    agent_types = [
+        "retail_fomo_trader",
+        "hni_options_seller",
+        "fii_algo_desk",
+        "domestic_mf_manager",
+        "operator_manipulator",
+        "technical_trader",
+        "sebi_circuit_watcher",
+        "news_driven_punter"
+    ]
+    
+    mock_context = "MARKET OPENED FLAT. NIFTY SUPPORT AT 22000 BROKEN. FII NET SELL -800 CR. VIX UP 15%."
+    
+    print("\n=== INDIVIDUAL PERSONA OUTPUTS ===")
+    for i, a_type in enumerate(agent_types):
+        mock_agent = {
+            "name": f"Agent_{i}_{a_type}",
+            "type": a_type,
+            "market_context": mock_context
+        }
+        res = generator._build_individual_persona_prompt(
+            entity_name=mock_agent["name"],
+            entity_type=mock_agent["type"],
+            entity_summary=f"Summary for {mock_agent['name']}",
+            entity_attributes={},
+            context=mock_agent["market_context"]
+        )
+        print(f"\n--- {a_type} ---")
+        print(res[:200] + "...")
+        
+    print("\n=== GROUP PERSONA OUTPUT ===")
+    res_group = generator._build_group_persona_prompt(
+        entity_name="TestGroup",
+        entity_type="MarketGroup",
+        entity_summary="Mock Group",
+        entity_attributes={},
+        context=mock_context
+    )
+    print(res_group[:300] + "...")

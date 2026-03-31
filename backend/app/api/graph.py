@@ -149,10 +149,14 @@ def generate_ontology():
     try:
         logger.info("=== 开始生成本体定义 ===")
         
+        seed_mode = getattr(Config, 'SEED_MODE', 'document')
+        
         # 获取参数
+        request_body = request.form or {}
         simulation_requirement = request.form.get('simulation_requirement', '')
         project_name = request.form.get('project_name', 'Unnamed Project')
         additional_context = request.form.get('additional_context', '')
+        underlying = request.form.get('underlying', 'NIFTY')
         
         logger.debug(f"项目名称: {project_name}")
         logger.debug(f"模拟需求: {simulation_requirement[:100]}...")
@@ -165,7 +169,8 @@ def generate_ontology():
         
         # 获取上传的文件
         uploaded_files = request.files.getlist('files')
-        if not uploaded_files or all(not f.filename for f in uploaded_files):
+        
+        if seed_mode != 'dhan_live' and (not uploaded_files or all(not f.filename for f in uploaded_files)):
             return jsonify({
                 "success": False,
                 "error": "请至少上传一个文档文件"
@@ -179,6 +184,17 @@ def generate_ontology():
         # 保存文件并提取文本
         document_texts = []
         all_text = ""
+        
+        if seed_mode == 'dhan_live':
+            import asyncio
+            from ..services.dhan_ingest import build_market_seed
+            underlying = request_body.get("underlying", "NIFTY")
+            logger.info(f"Using dhan_live mode for seed ingestion (underlying: {underlying})")
+            
+            seed_text = asyncio.run(asyncio.to_thread(build_market_seed, underlying))
+            
+            document_texts.append(seed_text)
+            all_text += f"\n\n=== DHAN MARKET SEED ({underlying}) ===\n{seed_text}\n\n"
         
         for file in uploaded_files:
             if file and file.filename and allowed_file(file.filename):

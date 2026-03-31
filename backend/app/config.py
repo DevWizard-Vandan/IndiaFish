@@ -29,8 +29,22 @@ class Config:
     
     # LLM配置（统一使用OpenAI格式）
     LLM_API_KEY = os.environ.get('LLM_API_KEY')
-    LLM_BASE_URL = os.environ.get('LLM_BASE_URL', 'https://api.openai.com/v1')
-    LLM_MODEL_NAME = os.environ.get('LLM_MODEL_NAME', 'gpt-4o-mini')
+    LLM_BASE_URL = os.environ.get('LLM_BASE_URL', 'https://api.anthropic.com/v1')
+    LLM_MODEL_NAME = os.environ.get('LLM_MODEL_NAME', 'claude-sonnet-4-20250514')
+    
+    # Seed 配置
+    SEED_MODE = os.environ.get('SEED_MODE', 'document')
+    
+    # DHAN 配置
+    DHAN_CLIENT_ID = os.environ.get('DHAN_CLIENT_ID')
+    DHAN_ACCESS_TOKEN = os.environ.get('DHAN_ACCESS_TOKEN')
+
+    # Telegram 配置
+    TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
+    TELEGRAM_ADMIN_CHAT_ID = os.getenv("TELEGRAM_ADMIN_CHAT_ID", "")
+    TELEGRAM_ALLOWED_USERS = [
+        x.strip() for x in os.getenv("TELEGRAM_ALLOWED_USERS", "").split(",") if x.strip()
+    ]
     
     # Zep配置
     ZEP_API_KEY = os.environ.get('ZEP_API_KEY')

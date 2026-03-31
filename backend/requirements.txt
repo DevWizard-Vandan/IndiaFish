@@ -33,3 +33,9 @@ python-dotenv>=1.0.0
 
 # 数据验证
 pydantic>=2.0.0
+
+# ============= 外部API与数据抓取 =============
+dhanhq>=1.3.0
+pandas>=2.0.0
+requests>=2.30.0
+yfinance>=0.2.0
