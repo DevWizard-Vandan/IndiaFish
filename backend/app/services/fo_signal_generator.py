@@ -419,10 +419,13 @@ def generate_fo_report(
     iv_signal: dict,
     seed_summary: str = "",
     timestamp: str = "",
+    n_agents: int = 200,
+    n_rounds: int = 20,
 ) -> str:
     report_timestamp = timestamp or ""
     one_line_summary = _one_line_summary(bias, max_pain, iv_signal)
-    n_rounds = _safe_int(_REPORT_CONTEXT.get("n_rounds"), 0)
+    n_agents = _safe_int(n_agents, 200)
+    n_rounds = _safe_int(n_rounds, 20)
     agents_counted = _safe_int(bias.get("agents_counted"), 0)
 
     return "\n".join(
@@ -467,7 +470,7 @@ def generate_fo_report(
             f"> {one_line_summary}",
             "",
             "---",
-            f"*IndiaFish swarm simulation — {agents_counted} agents, {n_rounds} rounds.*",
+            f"*IndiaFish swarm simulation — {n_agents} agents, {n_rounds} rounds.*",
             "*Not financial advice. For research purposes only.*",
             "---",
         ]
@@ -483,8 +486,8 @@ def process_simulation_output(simulation_result_dict: dict) -> dict:
     simulation_result = simulation_result_dict.get("simulation_result") or {}
     seed_summary = simulation_result_dict.get("seed_summary", "")
     timestamp = simulation_result_dict.get("timestamp", "")
-    n_agents = _safe_int(simulation_result_dict.get("n_agents"), 0)
-    n_rounds = _safe_int(simulation_result_dict.get("n_rounds"), 0)
+    n_agents = _safe_int(simulation_result_dict.get("n_agents"), 200)
+    n_rounds = _safe_int(simulation_result_dict.get("n_rounds"), 20)
 
     try:
         from app.services.dhan_ingest import get_option_chain
@@ -497,7 +500,6 @@ def process_simulation_output(simulation_result_dict: dict) -> dict:
     max_pain_data = compute_max_pain_signal(chain_data)
     iv_signal = compute_iv_signal(simulation_result, chain_data)
 
-    _REPORT_CONTEXT["n_rounds"] = n_rounds
     report_md = generate_fo_report(
         scenario_id,
         scenario_name,
@@ -507,6 +509,8 @@ def process_simulation_output(simulation_result_dict: dict) -> dict:
         iv_signal,
         seed_summary,
         timestamp,
+        n_agents=n_agents,
+        n_rounds=n_rounds,
     )
 
     return {

@@ -382,10 +382,12 @@ def start_bot() -> None:
     dp.add_handler(CallbackQueryHandler(sim_callback_handler))
     dp.add_handler(MessageHandler(Filters.text & ~Filters.command, _fallback_message_handler))
     updater.start_polling()
-    updater.idle()
+    # idle() removed — not compatible with threaded mode
+    # polling continues until thread is stopped
 
 
 def start_bot_thread() -> threading.Thread:
     thread = threading.Thread(target=start_bot, daemon=True)
     thread.start()
+    time.sleep(2)  # give bot time to connect before returning
     return thread
