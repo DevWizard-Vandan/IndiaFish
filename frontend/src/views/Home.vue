@@ -1,134 +1,149 @@
 <template>
   <div class="home-container">
-    <!-- 顶部导航栏 -->
     <nav class="navbar">
-      <div class="nav-brand">MIROFISH</div>
+      <div class="nav-brand">INDIAFISH</div>
       <div class="nav-links">
         <a href="https://github.com/666ghj/MiroFish" target="_blank" class="github-link">
-          访问我们的Github主页 <span class="arrow">↗</span>
+          View the project repository <span class="arrow">↗</span>
         </a>
       </div>
     </nav>
 
     <div class="main-content">
-      <!-- 上半部分：Hero 区域 -->
       <section class="hero-section">
         <div class="hero-left">
           <div class="tag-row">
-            <span class="orange-tag">简洁通用的群体智能引擎</span>
-            <span class="version-text">/ v0.1-预览版</span>
+            <span class="orange-tag">Indian F&O Swarm Simulator</span>
+            <span class="version-text">/ preview build</span>
           </div>
-          
+
           <h1 class="main-title">
-            上传任意报告<br>
-            <span class="gradient-text">即刻推演未来</span>
+            Simulate Indian markets<br>
+            <span class="gradient-text">from a live seed</span>
           </h1>
-          
+
           <div class="hero-desc">
             <p>
-              即使只有一段文字，<span class="highlight-bold">MiroFish</span> 也能基于其中的现实种子，全自动生成与之对应的至多<span class="highlight-orange">百万级Agent</span>构成的平行世界。通过上帝视角注入变量，在复杂的群体交互中寻找动态环境下的<span class="highlight-code">“局部最优解”</span>
+              <span class="highlight-bold">IndiaFish</span> turns a seed document or live market feed into a market intelligence graph, a swarm of realistic agents, and a forward simulation of how Indian F&O participants may react.
             </p>
             <p class="slogan-text">
-              让未来在 Agent 群中预演，让决策在百战后胜出<span class="blinking-cursor">_</span>
+              Simulate Indian Markets<span class="blinking-cursor">_</span>
             </p>
           </div>
-           
+
           <div class="decoration-square"></div>
         </div>
-        
+
         <div class="hero-right">
-          <!-- Logo 区域 -->
           <div class="logo-container">
-            <img src="../assets/logo/MiroFish_logo_left.jpeg" alt="MiroFish Logo" class="hero-logo" />
+            <img src="../assets/logo/MiroFish_logo_left.jpeg" alt="IndiaFish Logo" class="hero-logo" />
           </div>
-          
+
           <button class="scroll-down-btn" @click="scrollToBottom">
             ↓
           </button>
         </div>
       </section>
 
-      <!-- 下半部分：双栏布局 -->
       <section class="dashboard-section">
-        <!-- 左栏：状态与步骤 -->
         <div class="left-panel">
           <div class="panel-header">
-            <span class="status-dot">■</span> 系统状态
+            <span class="status-dot">■</span> System Status
           </div>
-          
-          <h2 class="section-title">准备就绪</h2>
+
+          <h2 class="section-title">Ready to Run</h2>
           <p class="section-desc">
-            预测引擎待命中，可上传多份非结构化数据以初始化模拟序列
+            Upload a market seed or switch to live Dhan mode to start the IndiaFish pipeline.
           </p>
-          
-          <!-- 数据指标卡片 -->
+
           <div class="metrics-row">
             <div class="metric-card">
-              <div class="metric-value">低成本</div>
-              <div class="metric-label">常规模拟平均5$/次</div>
+              <div class="metric-value">Fast</div>
+              <div class="metric-label">Document to graph in one workflow</div>
             </div>
             <div class="metric-card">
-              <div class="metric-value">高可用</div>
-              <div class="metric-label">最多百万级Agent模拟</div>
+              <div class="metric-value">Live</div>
+              <div class="metric-label">Built for Indian F&O market seeds</div>
             </div>
           </div>
 
-          <!-- 项目模拟步骤介绍 (新增区域) -->
           <div class="steps-container">
             <div class="steps-header">
-               <span class="diamond-icon">◇</span> 工作流序列
+              <span class="diamond-icon">◇</span> Workflow
             </div>
             <div class="workflow-list">
               <div class="workflow-item">
                 <span class="step-num">01</span>
                 <div class="step-info">
-                  <div class="step-title">图谱构建</div>
-                  <div class="step-desc">现实种子提取 & 个体与群体记忆注入 & GraphRAG构建</div>
+                  <div class="step-title">Map Construction</div>
+                  <div class="step-desc">Market intelligence extraction, memory injection, and GraphRAG build</div>
                 </div>
               </div>
               <div class="workflow-item">
                 <span class="step-num">02</span>
                 <div class="step-info">
-                  <div class="step-title">环境搭建</div>
-                  <div class="step-desc">实体关系抽取 & 人设生成 & 环境配置Agent注入仿真参数</div>
+                  <div class="step-title">Environment Setup</div>
+                  <div class="step-desc">Persona generation, scenario selection, and simulation configuration</div>
                 </div>
               </div>
               <div class="workflow-item">
                 <span class="step-num">03</span>
                 <div class="step-info">
-                  <div class="step-title">开始模拟</div>
-                  <div class="step-desc">双平台并行模拟 & 自动解析预测需求 & 动态更新时序记忆</div>
+                  <div class="step-title">Run Simulation</div>
+                  <div class="step-desc">Launch the swarm and monitor how agents react across the market graph</div>
                 </div>
               </div>
               <div class="workflow-item">
                 <span class="step-num">04</span>
                 <div class="step-info">
-                  <div class="step-title">报告生成</div>
-                  <div class="step-desc">ReportAgent拥有丰富的工具集与模拟后环境进行深度交互</div>
+                  <div class="step-title">Generate Report</div>
+                  <div class="step-desc">Produce structured output, F&O signal panels, and scenario analysis</div>
                 </div>
               </div>
               <div class="workflow-item">
                 <span class="step-num">05</span>
                 <div class="step-info">
-                  <div class="step-title">深度互动</div>
-                  <div class="step-desc">与模拟世界中的任意一位进行对话 & 与ReportAgent进行对话</div>
+                  <div class="step-title">Deep Interaction</div>
+                  <div class="step-desc">Interrogate the simulated world, report agent, and graph memory</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 右栏：交互控制台 -->
         <div class="right-panel">
           <div class="console-box">
-            <!-- 上传区域 -->
             <div class="console-section">
               <div class="console-header">
-                <span class="console-label">01 / 现实种子</span>
-                <span class="console-meta">支持格式: PDF, MD, TXT</span>
+                <span class="console-label">01 / Seed Mode</span>
+                <span class="console-meta">Choose how IndiaFish should start</span>
               </div>
-              
-              <div 
+
+              <div class="seed-mode-toggle" role="tablist" aria-label="Seed mode">
+                <button
+                  class="seed-mode-btn"
+                  :class="{ active: seedMode === 'document' }"
+                  @click="seedMode = 'document'"
+                >
+                  Upload Document
+                </button>
+                <button
+                  class="seed-mode-btn"
+                  :class="{ active: seedMode === 'dhan_live' }"
+                  @click="seedMode = 'dhan_live'"
+                >
+                  Live Dhan Feed
+                </button>
+              </div>
+            </div>
+
+            <div v-if="seedMode === 'document'" class="console-section">
+              <div class="console-header">
+                <span class="console-label">02 / Reality Seed</span>
+                <span class="console-meta">Supported: PDF, MD, TXT</span>
+              </div>
+
+              <div
                 class="upload-zone"
                 :class="{ 'drag-over': isDragOver, 'has-files': files.length > 0 }"
                 @dragover.prevent="handleDragOver"
@@ -145,13 +160,13 @@
                   style="display: none"
                   :disabled="loading"
                 />
-                
+
                 <div v-if="files.length === 0" class="upload-placeholder">
                   <div class="upload-icon">↑</div>
-                  <div class="upload-title">拖拽文件上传</div>
-                  <div class="upload-hint">或点击浏览文件系统</div>
+                  <div class="upload-title">Drop files here to upload</div>
+                  <div class="upload-hint">or click to browse</div>
                 </div>
-                
+
                 <div v-else class="file-list">
                   <div v-for="(file, index) in files" :key="index" class="file-item">
                     <span class="file-icon">📄</span>
@@ -162,37 +177,62 @@
               </div>
             </div>
 
-            <!-- 分割线 -->
-            <div class="console-divider">
-              <span>输入参数</span>
+            <div v-else class="console-section">
+              <div class="console-header">
+                <span class="console-label">02 / Live Feed</span>
+                <span class="console-meta">Sends a Dhan live seed request</span>
+              </div>
+
+              <div class="live-form">
+                <label class="field-label" for="underlying-select">Underlying</label>
+                <select id="underlying-select" v-model="selectedUnderlying" class="field-input">
+                  <option v-for="option in underlyingOptions" :key="option" :value="option">
+                    {{ option }}
+                  </option>
+                </select>
+
+                <label class="field-label" for="underlying-symbol">Underlying Symbol</label>
+                <input
+                  id="underlying-symbol"
+                  v-model="underlyingSymbol"
+                  type="text"
+                  class="field-input"
+                >
+
+                <button type="button" class="fetch-btn" @click="syncUnderlyingFromInput">
+                  Fetch Live Data
+                </button>
+              </div>
             </div>
 
-            <!-- 输入区域 -->
+            <div class="console-divider">
+              <span>INPUT PARAMETERS</span>
+            </div>
+
             <div class="console-section">
               <div class="console-header">
-                <span class="console-label">>_ 02 / 模拟提示词</span>
+                <span class="console-label">03 / Simulation Prompt</span>
               </div>
               <div class="input-wrapper">
                 <textarea
                   v-model="formData.simulationRequirement"
                   class="code-input"
-                  placeholder="// 用自然语言输入模拟或预测需求（例.武大若发布撤销肖某处分的公告，会引发什么舆情走向）"
+                  placeholder="// Describe the market question you want to simulate"
                   rows="6"
                   :disabled="loading"
                 ></textarea>
-                <div class="model-badge">引擎: MiroFish-V1.0</div>
+                <div class="model-badge">Engine: IndiaFish-V1.0</div>
               </div>
             </div>
 
-            <!-- 启动按钮 -->
             <div class="console-section btn-section">
-              <button 
+              <button
                 class="start-engine-btn"
                 @click="startSimulation"
                 :disabled="!canSubmit || loading"
               >
-                <span v-if="!loading">启动引擎</span>
-                <span v-else>初始化中...</span>
+                <span v-if="!loading">Launch IndiaFish</span>
+                <span v-else>Initializing...</span>
                 <span class="btn-arrow">→</span>
               </button>
             </div>
@@ -200,87 +240,83 @@
         </div>
       </section>
 
-      <!-- 历史项目数据库 -->
       <HistoryDatabase />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import HistoryDatabase from '../components/HistoryDatabase.vue'
 
 const router = useRouter()
 
-// 表单数据
 const formData = ref({
   simulationRequirement: ''
 })
 
-// 文件列表
 const files = ref([])
-
-// 状态
 const loading = ref(false)
-const error = ref('')
 const isDragOver = ref(false)
-
-// 文件输入引用
 const fileInput = ref(null)
 
-// 计算属性:是否可以提交
-const canSubmit = computed(() => {
-  return formData.value.simulationRequirement.trim() !== '' && files.value.length > 0
+const seedMode = ref('document')
+const underlyingOptions = ['NIFTY', 'BANKNIFTY', 'FINNIFTY', 'MIDCPNIFTY']
+const selectedUnderlying = ref('NIFTY')
+const underlyingSymbol = ref('NIFTY')
+
+watch(selectedUnderlying, (value) => {
+  underlyingSymbol.value = value
 })
 
-// 触发文件选择
+const canSubmit = computed(() => {
+  const hasPrompt = formData.value.simulationRequirement.trim() !== ''
+  if (!hasPrompt) return false
+  if (seedMode.value === 'document') {
+    return files.value.length > 0
+  }
+  return underlyingSymbol.value.trim() !== ''
+})
+
 const triggerFileInput = () => {
-  if (!loading.value) {
+  if (!loading.value && seedMode.value === 'document') {
     fileInput.value?.click()
   }
 }
 
-// 处理文件选择
-const handleFileSelect = (event) => {
-  const selectedFiles = Array.from(event.target.files)
-  addFiles(selectedFiles)
-}
-
-// 处理拖拽相关
-const handleDragOver = (e) => {
-  if (!loading.value) {
-    isDragOver.value = true
-  }
-}
-
-const handleDragLeave = (e) => {
-  isDragOver.value = false
-}
-
-const handleDrop = (e) => {
-  isDragOver.value = false
-  if (loading.value) return
-  
-  const droppedFiles = Array.from(e.dataTransfer.files)
-  addFiles(droppedFiles)
-}
-
-// 添加文件
 const addFiles = (newFiles) => {
-  const validFiles = newFiles.filter(file => {
-    const ext = file.name.split('.').pop().toLowerCase()
+  const validFiles = newFiles.filter((file) => {
+    const ext = file.name.split('.').pop()?.toLowerCase()
     return ['pdf', 'md', 'txt'].includes(ext)
   })
   files.value.push(...validFiles)
 }
 
-// 移除文件
+const handleFileSelect = (event) => {
+  addFiles(Array.from(event.target.files || []))
+}
+
+const handleDragOver = () => {
+  if (!loading.value) {
+    isDragOver.value = true
+  }
+}
+
+const handleDragLeave = () => {
+  isDragOver.value = false
+}
+
+const handleDrop = (event) => {
+  isDragOver.value = false
+  if (loading.value) return
+  addFiles(Array.from(event.dataTransfer.files || []))
+}
+
 const removeFile = (index) => {
   files.value.splice(index, 1)
 }
 
-// 滚动到底部
 const scrollToBottom = () => {
   window.scrollTo({
     top: document.body.scrollHeight,
@@ -288,15 +324,24 @@ const scrollToBottom = () => {
   })
 }
 
-// 开始模拟 - 立即跳转，API调用在Process页面进行
+const syncUnderlyingFromInput = () => {
+  const next = underlyingSymbol.value.trim().toUpperCase()
+  if (!next) return
+  underlyingSymbol.value = next
+  if (underlyingOptions.includes(next)) {
+    selectedUnderlying.value = next
+  }
+}
+
 const startSimulation = () => {
   if (!canSubmit.value || loading.value) return
-  
-  // 存储待上传的数据
+
   import('../store/pendingUpload.js').then(({ setPendingUpload }) => {
-    setPendingUpload(files.value, formData.value.simulationRequirement)
-    
-    // 立即跳转到Process页面（使用特殊标识表示新建项目）
+    setPendingUpload(files.value, formData.value.simulationRequirement, {
+      seedMode: seedMode.value,
+      underlying: underlyingSymbol.value.trim().toUpperCase()
+    })
+
     router.push({
       name: 'Process',
       params: { projectId: 'new' }
@@ -306,21 +351,15 @@ const startSimulation = () => {
 </script>
 
 <style scoped>
-/* 全局变量与重置 */
 :root {
   --black: #000000;
-  --white: #FFFFFF;
-  --orange: #FF4500;
-  --gray-light: #F5F5F5;
+  --white: #ffffff;
+  --orange: #ff4500;
+  --gray-light: #f5f5f5;
   --gray-text: #666666;
-  --border: #E5E5E5;
-  /* 
-    使用 Space Grotesk 作为主要标题字体，JetBrains Mono 作为代码/标签字体
-    确保已在 index.html 引入这些 Google Fonts 
-  */
+  --border: #e5e5e5;
   --font-mono: 'JetBrains Mono', monospace;
-  --font-sans: 'Space Grotesk', 'Noto Sans SC', system-ui, sans-serif;
-  --font-cn: 'Noto Sans SC', system-ui, sans-serif;
+  --font-sans: 'Space Grotesk', system-ui, sans-serif;
 }
 
 .home-container {
@@ -330,7 +369,6 @@ const startSimulation = () => {
   color: var(--black);
 }
 
-/* 顶部导航 */
 .navbar {
   height: 60px;
   background: var(--black);
@@ -348,44 +386,26 @@ const startSimulation = () => {
   font-size: 1.2rem;
 }
 
-.nav-links {
-  display: flex;
-  align-items: center;
-}
-
 .github-link {
   color: var(--white);
   text-decoration: none;
   font-family: var(--font-mono);
   font-size: 0.9rem;
-  font-weight: 500;
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: opacity 0.2s;
 }
 
-.github-link:hover {
-  opacity: 0.8;
-}
-
-.arrow {
-  font-family: sans-serif;
-}
-
-/* 主要内容区 */
 .main-content {
   max-width: 1400px;
   margin: 0 auto;
   padding: 60px 40px;
 }
 
-/* Hero 区域 */
 .hero-section {
   display: flex;
   justify-content: space-between;
   margin-bottom: 80px;
-  position: relative;
 }
 
 .hero-left {
@@ -407,14 +427,10 @@ const startSimulation = () => {
   color: var(--white);
   padding: 4px 10px;
   font-weight: 700;
-  letter-spacing: 1px;
-  font-size: 0.75rem;
 }
 
 .version-text {
   color: #999;
-  font-weight: 500;
-  letter-spacing: 0.5px;
 }
 
 .main-title {
@@ -423,14 +439,12 @@ const startSimulation = () => {
   font-weight: 500;
   margin: 0 0 40px 0;
   letter-spacing: -2px;
-  color: var(--black);
 }
 
 .gradient-text {
   background: linear-gradient(90deg, #000000 0%, #444444 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  display: inline-block;
 }
 
 .hero-desc {
@@ -439,12 +453,6 @@ const startSimulation = () => {
   color: var(--gray-text);
   max-width: 640px;
   margin-bottom: 50px;
-  font-weight: 400;
-  text-align: justify;
-}
-
-.hero-desc p {
-  margin-bottom: 1.5rem;
 }
 
 .highlight-bold {
@@ -463,19 +471,14 @@ const startSimulation = () => {
   padding: 2px 6px;
   border-radius: 2px;
   font-family: var(--font-mono);
-  font-size: 0.9em;
-  color: var(--black);
-  font-weight: 600;
 }
 
 .slogan-text {
   font-size: 1.2rem;
   font-weight: 520;
   color: var(--black);
-  letter-spacing: 1px;
   border-left: 3px solid var(--orange);
   padding-left: 15px;
-  margin-top: 20px;
 }
 
 .blinking-cursor {
@@ -511,7 +514,7 @@ const startSimulation = () => {
 }
 
 .hero-logo {
-  max-width: 500px; /* 调整logo大小 */
+  max-width: 500px;
   width: 100%;
 }
 
@@ -520,20 +523,11 @@ const startSimulation = () => {
   height: 40px;
   border: 1px solid var(--border);
   background: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
   color: var(--orange);
   font-size: 1.2rem;
-  transition: all 0.2s;
 }
 
-.scroll-down-btn:hover {
-  border-color: var(--orange);
-}
-
-/* Dashboard 双栏布局 */
 .dashboard-section {
   display: flex;
   gap: 60px;
@@ -542,19 +536,26 @@ const startSimulation = () => {
   align-items: flex-start;
 }
 
-.dashboard-section .left-panel,
-.dashboard-section .right-panel {
-  display: flex;
-  flex-direction: column;
-}
-
-/* 左侧面板 */
 .left-panel {
   flex: 0.8;
 }
 
-.panel-header {
+.right-panel {
+  flex: 1.2;
+}
+
+.panel-header,
+.steps-header,
+.console-header,
+.console-divider span,
+.metric-value,
+.step-num,
+.model-badge,
+.console-label {
   font-family: var(--font-mono);
+}
+
+.panel-header {
   font-size: 0.8rem;
   color: #999;
   display: flex;
@@ -565,7 +566,6 @@ const startSimulation = () => {
 
 .status-dot {
   color: var(--orange);
-  font-size: 0.8rem;
 }
 
 .section-title {
@@ -593,10 +593,8 @@ const startSimulation = () => {
 }
 
 .metric-value {
-  font-family: var(--font-mono);
   font-size: 1.8rem;
   font-weight: 520;
-  margin-bottom: 5px;
 }
 
 .metric-label {
@@ -604,26 +602,18 @@ const startSimulation = () => {
   color: #999;
 }
 
-/* 项目模拟步骤介绍 */
 .steps-container {
   border: 1px solid var(--border);
   padding: 30px;
-  position: relative;
 }
 
 .steps-header {
-  font-family: var(--font-mono);
   font-size: 0.8rem;
   color: #999;
   margin-bottom: 25px;
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-.diamond-icon {
-  font-size: 1.2rem;
-  line-height: 1;
 }
 
 .workflow-list {
@@ -638,17 +628,6 @@ const startSimulation = () => {
   gap: 20px;
 }
 
-.step-num {
-  font-family: var(--font-mono);
-  font-weight: 700;
-  color: var(--black);
-  opacity: 0.3;
-}
-
-.step-info {
-  flex: 1;
-}
-
 .step-title {
   font-weight: 520;
   font-size: 1rem;
@@ -660,35 +639,53 @@ const startSimulation = () => {
   color: var(--gray-text);
 }
 
-/* 右侧交互控制台 */
-.right-panel {
-  flex: 1.2;
-}
-
 .console-box {
-  border: 1px solid #CCC; /* 外部实线 */
-  padding: 8px; /* 内边距形成双重边框感 */
+  border: 1px solid #ccc;
+  padding: 8px;
 }
 
 .console-section {
   padding: 20px;
 }
 
-.console-section.btn-section {
-  padding-top: 0;
-}
-
 .console-header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 15px;
-  font-family: var(--font-mono);
   font-size: 0.75rem;
   color: #666;
 }
 
+.console-meta {
+  color: #999;
+}
+
+.seed-mode-toggle {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.seed-mode-btn,
+.fetch-btn {
+  border: 1px solid #d7d7d7;
+  background: #fff;
+  padding: 12px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.seed-mode-btn.active,
+.fetch-btn {
+  background: #000;
+  border-color: #000;
+  color: #fff;
+}
+
 .upload-zone {
-  border: 1px dashed #CCC;
+  border: 1px dashed #ccc;
   height: 200px;
   overflow-y: auto;
   display: flex;
@@ -696,7 +693,7 @@ const startSimulation = () => {
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s;
-  background: #FAFAFA;
+  background: #fafafa;
 }
 
 .upload-zone.has-files {
@@ -704,8 +701,7 @@ const startSimulation = () => {
 }
 
 .upload-zone:hover {
-  background: #F0F0F0;
-  border-color: #999;
+  background: #f0f0f0;
 }
 
 .upload-placeholder {
@@ -715,7 +711,7 @@ const startSimulation = () => {
 .upload-icon {
   width: 40px;
   height: 40px;
-  border: 1px solid #DDD;
+  border: 1px solid #ddd;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -748,7 +744,7 @@ const startSimulation = () => {
   align-items: center;
   background: var(--white);
   padding: 8px 12px;
-  border: 1px solid #EEE;
+  border: 1px solid #eee;
   font-family: var(--font-mono);
   font-size: 0.85rem;
 }
@@ -766,6 +762,26 @@ const startSimulation = () => {
   color: #999;
 }
 
+.live-form {
+  display: grid;
+  gap: 12px;
+}
+
+.field-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #666;
+}
+
+.field-input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  background: #fafafa;
+  font-size: 0.95rem;
+}
+
 .console-divider {
   display: flex;
   align-items: center;
@@ -777,21 +793,20 @@ const startSimulation = () => {
   content: '';
   flex: 1;
   height: 1px;
-  background: #EEE;
+  background: #eee;
 }
 
 .console-divider span {
   padding: 0 15px;
-  font-family: var(--font-mono);
   font-size: 0.7rem;
-  color: #BBB;
+  color: #bbb;
   letter-spacing: 1px;
 }
 
 .input-wrapper {
   position: relative;
-  border: 1px solid #DDD;
-  background: #FAFAFA;
+  border: 1px solid #ddd;
+  background: #fafafa;
 }
 
 .code-input {
@@ -811,9 +826,12 @@ const startSimulation = () => {
   position: absolute;
   bottom: 10px;
   right: 15px;
-  font-family: var(--font-mono);
   font-size: 0.7rem;
-  color: #AAA;
+  color: #aaa;
+}
+
+.btn-section {
+  padding-top: 0;
 }
 
 .start-engine-btn {
@@ -830,61 +848,37 @@ const startSimulation = () => {
   align-items: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  letter-spacing: 1px;
-  position: relative;
-  overflow: hidden;
-}
-
-/* 可点击状态（非禁用） */
-.start-engine-btn:not(:disabled) {
-  background: var(--black);
-  border: 1px solid var(--black);
-  animation: pulse-border 2s infinite;
 }
 
 .start-engine-btn:hover:not(:disabled) {
   background: var(--orange);
-  border-color: var(--orange);
-  transform: translateY(-2px);
-}
-
-.start-engine-btn:active:not(:disabled) {
-  transform: translateY(0);
 }
 
 .start-engine-btn:disabled {
-  background: #E5E5E5;
+  background: #e5e5e5;
   color: #999;
   cursor: not-allowed;
-  transform: none;
-  border: 1px solid #E5E5E5;
 }
 
-/* 引导动画：微妙的边框脉冲 */
-@keyframes pulse-border {
-  0% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2); }
-  70% { box-shadow: 0 0 0 6px rgba(0, 0, 0, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
-}
-
-/* 响应式适配 */
 @media (max-width: 1024px) {
-  .dashboard-section {
-    flex-direction: column;
-  }
-  
+  .dashboard-section,
   .hero-section {
     flex-direction: column;
   }
-  
+
   .hero-left {
     padding-right: 0;
     margin-bottom: 40px;
   }
-  
+
   .hero-logo {
-    max-width: 200px;
-    margin-bottom: 20px;
+    max-width: 220px;
+  }
+
+  .seed-mode-toggle,
+  .metrics-row {
+    grid-template-columns: 1fr;
+    flex-direction: column;
   }
 }
 </style>

@@ -63,6 +63,44 @@
               </div>
             </div>
           </div>
+
+          <div v-if="foSignals || reportMarkdown" class="fo-signals-panel">
+            <div class="fo-header">
+              <h2>F&O Signals</h2>
+              <span class="fo-subtitle">Scenario-driven IndiaFish overlay</span>
+            </div>
+
+            <div v-if="foSignals" class="fo-cards">
+              <div class="fo-card" :class="biasCardClass">
+                <span class="fo-card-label">Nifty Bias</span>
+                <strong class="fo-card-value">{{ foSignals.bias?.bias || 'NEUTRAL' }}</strong>
+                <span class="fo-card-meta">
+                  Bull {{ foSignals.bias?.bull_pct ?? 0 }}% | Bear {{ foSignals.bias?.bear_pct ?? 0 }}% | Neutral {{ foSignals.bias?.neutral_pct ?? 0 }}%
+                </span>
+                <span class="fo-card-meta">Confidence: {{ foSignals.bias?.confidence_label || 'Low' }}</span>
+              </div>
+
+              <div class="fo-card fo-card--neutral">
+                <span class="fo-card-label">Max Pain</span>
+                <strong class="fo-card-value">{{ formatStrike(foSignals.max_pain?.max_pain_strike || 0) }}</strong>
+                <span class="fo-card-meta">
+                  Distance: {{ foSignals.max_pain?.distance_points ?? 0 }} pts ({{ foSignals.max_pain?.distance_pct ?? 0 }}%)
+                </span>
+                <span class="fo-card-meta">Pinning: {{ foSignals.max_pain?.pinning_probability || 'Unknown' }}</span>
+                <span class="fo-card-meta">{{ foSignals.max_pain?.direction_to_pain || 'No directional pull available' }}</span>
+              </div>
+
+              <div class="fo-card fo-card--neutral">
+                <span class="fo-card-label">IV Signal</span>
+                <strong class="fo-card-value">{{ foSignals.iv?.iv_direction || 'NEUTRAL' }}</strong>
+                <span class="fo-card-meta">Current IV: {{ foSignals.iv?.current_iv ?? 0 }}%</span>
+                <span class="fo-card-meta">Signal strength: {{ Math.round((foSignals.iv?.signal_strength || 0) * 100) }}%</span>
+                <span class="fo-card-meta">{{ truncateText(foSignals.iv?.trade_implication || 'No clear IV edge', 60) }}</span>
+              </div>
+            </div>
+
+            <pre v-if="reportMarkdown" class="fo-report-markdown">{{ reportMarkdown }}</pre>
+          </div>
         </div>
 
         <!-- Waiting State -->
@@ -393,13 +431,19 @@
 import { ref, computed, watch, onMounted, onUnmounted, nextTick, h, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { getAgentLog, getConsoleLog } from '../api/report'
+import { runScenarioSimulation } from '../api/scenario'
+import { formatStrike } from '../utils/format'
 
 const router = useRouter()
 
 const props = defineProps({
   reportId: String,
   simulationId: String,
-  systemLogs: Array
+  systemLogs: Array,
+  scenarioId: String,
+  customVariable: String,
+  agentCount: Number,
+  maxRounds: Number
 })
 
 const emit = defineEmits(['add-log', 'update-status'])
@@ -428,6 +472,8 @@ const leftPanel = ref(null)
 const rightPanel = ref(null)
 const logContent = ref(null)
 const showRawResult = reactive({})
+const foSignals = ref(null)
+const reportMarkdown = ref('')
 
 // Toggle functions
 const toggleRawResult = (timestamp, event) => {
@@ -1713,6 +1759,13 @@ const statusText = computed(() => {
   return 'Waiting'
 })
 
+const biasCardClass = computed(() => {
+  const bias = foSignals.value?.bias?.bias || 'NEUTRAL'
+  if (bias === 'BULL' || bias === 'BULL-LEANING') return 'fo-card--bull'
+  if (bias === 'BEAR' || bias === 'BEAR-LEANING') return 'fo-card--bear'
+  return 'fo-card--neutral'
+})
+
 const totalSections = computed(() => {
   return reportOutline.value?.sections?.length || 0
 })
@@ -1864,6 +1917,27 @@ const truncateText = (text, maxLen) => {
   if (!text) return ''
   if (text.length <= maxLen) return text
   return text.substring(0, maxLen) + '...'
+}
+
+const loadFoSignals = async () => {
+  if (!props.scenarioId) return
+
+  try {
+    const res = await runScenarioSimulation({
+      scenario_id: props.scenarioId,
+      n_agents: props.agentCount || 200,
+      n_rounds: props.maxRounds || 20,
+      custom_variable: props.customVariable || undefined,
+      underlying: 'NIFTY'
+    })
+
+    if (res.success && res.data) {
+      foSignals.value = res.data.fo_signals || null
+      reportMarkdown.value = res.data.report_markdown || ''
+    }
+  } catch (err) {
+    emit('add-log', `Failed to load F&O signals: ${err.message}`)
+  }
 }
 
 const renderMarkdown = (content) => {
@@ -2176,6 +2250,7 @@ onMounted(() => {
     addLog(`Report Agent initialized: ${props.reportId}`)
     startPolling()
   }
+  loadFoSignals()
 })
 
 onUnmounted(() => {
@@ -2658,6 +2733,90 @@ watch(() => props.reportId, (newId) => {
 
 .waiting-text {
   font-size: 14px;
+}
+
+.fo-signals-panel {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.fo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.fo-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #111827;
+}
+
+.fo-subtitle {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.fo-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.fo-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-radius: 12px;
+  padding: 16px;
+  color: #111827;
+  background: #f3f4f6;
+}
+
+.fo-card--bull {
+  background: #dcfce7;
+}
+
+.fo-card--bear {
+  background: #fee2e2;
+}
+
+.fo-card--neutral {
+  background: #e5e7eb;
+}
+
+.fo-card-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #475569;
+}
+
+.fo-card-value {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.fo-card-meta {
+  font-size: 12px;
+  color: #334155;
+  line-height: 1.5;
+}
+
+.fo-report-markdown {
+  margin: 0;
+  padding: 16px;
+  background: #0f172a;
+  color: #e2e8f0;
+  border-radius: 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 12px;
+  line-height: 1.7;
 }
 
 /* Right Panel */

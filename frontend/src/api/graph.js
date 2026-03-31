@@ -1,19 +1,52 @@
 import service, { requestWithRetry } from './index'
 
+const logOntologyRequest = (payload) => {
+  if (payload instanceof FormData) {
+    const body = {}
+    payload.forEach((value, key) => {
+      body[key] = value instanceof File ? `[File:${value.name}]` : value
+    })
+    console.info('Ontology API call', {
+      method: 'POST',
+      url: 'http://localhost:5001/api/graph/ontology/generate',
+      body
+    })
+    return
+  }
+
+  console.info('Ontology API call', {
+    method: 'POST',
+    url: 'http://localhost:5001/api/graph/ontology/generate',
+    body: payload
+  })
+}
+
 /**
- * 生成本体（上传文档和模拟需求）
- * @param {Object} data - 包含files, simulation_requirement, project_name等
- * @returns {Promise}
+ * Generate ontology from either document upload or live market seed input.
+ * The backend currently expects multipart/form-data, so live mode is also sent
+ * as FormData to match graph.py.
  */
-export function generateOntology(formData) {
-  return requestWithRetry(() => 
+export function generateOntology(payload) {
+  logOntologyRequest(payload)
+
+  if (payload instanceof FormData) {
+    return requestWithRetry(() =>
+      service({
+        url: '/api/graph/ontology/generate',
+        method: 'post',
+        data: payload,
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+    )
+  }
+
+  return requestWithRetry(() =>
     service({
       url: '/api/graph/ontology/generate',
       method: 'post',
-      data: formData,
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+      data: payload
     })
   )
 }

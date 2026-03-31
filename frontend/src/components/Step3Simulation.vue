@@ -287,7 +287,7 @@
 
 <script setup>
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { 
   startSimulation, 
   stopSimulation,
@@ -311,6 +311,7 @@ const props = defineProps({
 const emit = defineEmits(['go-back', 'next-step', 'add-log', 'update-status'])
 
 const router = useRouter()
+const route = useRoute()
 
 // State
 const isGeneratingReport = ref(false)
@@ -663,7 +664,16 @@ const handleNextStep = async () => {
       addLog(`✓ 报告生成任务已启动: ${reportId}`)
       
       // 跳转到报告页面
-      router.push({ name: 'Report', params: { reportId } })
+      router.push({
+        name: 'Report',
+        params: { reportId },
+        query: {
+          scenarioId: route.query.scenarioId || '',
+          customVariable: route.query.customVariable || '',
+          agentCount: route.query.agentCount || '',
+          maxRounds: route.query.maxRounds || ''
+        }
+      })
     } else {
       addLog(`✗ 启动报告生成失败: ${res.error || '未知错误'}`)
       isGeneratingReport.value = false
